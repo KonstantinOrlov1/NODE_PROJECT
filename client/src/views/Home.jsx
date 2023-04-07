@@ -1,26 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
-
-// [
-//   {
-//     date_start: 123456,
-//     date_end: 23456,
-//     user_id: 1
-//   },
-//   {
-//     date_start: 123456,
-//     date_end: 23456,
-//     user_id: 1
-//   },
-// ]
+import { Link } from "react-router-dom";
 
 export default () => {
-  
   const [Rooms, setRooms] = useState([]);
- 
+
   useEffect(() => {
     getRooms();
-  }, [])
+  }, []);
 
   const getRooms = async () => {
     let res = await fetch("http://localhost:5000/get-rooms");
@@ -30,11 +16,6 @@ export default () => {
       setRooms(data.body);
     }
   };
-
-  
-
-  
-  
 
   return (
     <>
@@ -51,9 +32,9 @@ export default () => {
                 >
                   <h4>{el.title}</h4>
 
-                  <Link to={`/room/${el.id}`} className="btn btn-success" >Open</Link>
-                
-                 
+                  <Link to={`/room/${el.id}`} className="btn btn-success">
+                    Open
+                  </Link>
                 </div>
               ))}
             </div>

@@ -15,21 +15,19 @@ module.exports = {
     res.send({ status: "err" });
   },
 
-  async getReserve(req, res)
-  {
+  async getReserve(req, res) {
     let { id } = req.params;
 
     let link = await connection();
 
-    let [data] = await link.query(`SELECT * FROM reserves WHERE room_id = '${id}'`);
+    let [data] = await link.query(
+      `SELECT * FROM reserves WHERE room_id = '${id}'`
+    );
 
     await link.end();
 
     res.send({ status: "ok", body: data });
-   
   },
-
-
 
   async addReserve(req, res) {
     let { date_start, date_end, room_id, user_id } = req.body;
@@ -54,9 +52,7 @@ module.exports = {
 
     let link = await connection();
 
-    let result = await link.query(
-      `DELETE FROM reserves WHERE id='${id}'`
-    );
+    let result = await link.query(`DELETE FROM reserves WHERE id='${id}'`);
 
     await link.end();
 

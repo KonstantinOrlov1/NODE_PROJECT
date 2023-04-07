@@ -11,8 +11,6 @@ module.exports = {
       `SELECT * FROM users WHERE email = '${email}' AND pass = '${pass}'`
     );
 
-    
-
     if (data.length) {
       let token = md5(email + Date.now());
 
