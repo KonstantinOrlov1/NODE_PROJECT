@@ -11,6 +11,8 @@ module.exports = {
       `SELECT * FROM users WHERE email = '${email}' AND pass = '${pass}'`
     );
 
+    
+
     if (data.length) {
       let token = md5(email + Date.now());
 
@@ -18,10 +20,14 @@ module.exports = {
         `UPDATE users SET token = '${token}' WHERE id = ${data[0].id}`
       );
 
+      await link.end();
+
       if (result) {
         return res.send({ status: "ok", body: { token } });
       }
     }
+
+    await link.end();
 
     res.send({ status: "err" });
   },
@@ -32,6 +38,8 @@ module.exports = {
     let [data] = await link.query(
       `SELECT * FROM users WHERE token = '${req.params.token}'`
     );
+
+    await link.end();
 
     if (data.length) {
       return res.send({

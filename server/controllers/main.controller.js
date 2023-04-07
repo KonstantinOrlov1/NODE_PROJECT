@@ -6,20 +6,41 @@ module.exports = {
 
     let [data] = await link.query(`SELECT * FROM rooms`);
 
+    await link.end();
+
     if (data.length) {
       return res.send({ status: "ok", body: data });
     }
 
     res.send({ status: "err" });
   },
+
+  async getReserve(req, res)
+  {
+    let { id } = req.params;
+
+    let link = await connection();
+
+    let [data] = await link.query(`SELECT * FROM reserves WHERE room_id = '${id}'`);
+
+    await link.end();
+
+    res.send({ status: "ok", body: data });
+   
+  },
+
+
+
   async addReserve(req, res) {
-    let { id, date_start, date_end, user_id } = req.body;
+    let { date_start, date_end, room_id, user_id } = req.body;
 
     let link = await connection();
 
     let result = await link.query(
-      `UPDATE rooms SET reserve=1, date_start='${date_start}', date_end='${date_end}', user_id='${user_id}' WHERE id='${id}'`
+      `INSERT INTO reserves (date_start, date_end, room_id, user_id) VALUES ('${date_start}', '${date_end}', '${room_id}', '${user_id}')`
     );
+
+    await link.end();
 
     if (result) {
       return res.send({ status: "ok" });
@@ -34,8 +55,10 @@ module.exports = {
     let link = await connection();
 
     let result = await link.query(
-      `UPDATE rooms SET reserve=0, date_start='', date_end='', user_id='0' WHERE id='${id}'`
+      `DELETE FROM reserves WHERE id='${id}'`
     );
+
+    await link.end();
 
     if (result) {
       return res.send({ status: "ok" });

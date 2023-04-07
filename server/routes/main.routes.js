@@ -9,6 +9,8 @@ router.post("/login", Auth.login);
 router.get("/check-login/:token", Auth.checkLogin);
 
 router.get("/get-rooms", Main.getRooms);
+router.get("/get-reserve/:id", Main.getReserve);
+
 router.post("/reserve", Main.addReserve);
 router.post("/cancel-reserve", Main.cancelReserve);
 
